@@ -1,23 +1,5 @@
 import styled, { keyframes, css } from 'styled-components';
 
-const holoSparkle = keyframes`
-  0%, 100% {
-    opacity: .75;  filter: brightness(1.2) contrast(1.25);
-  }
-  5%, 8% {
-    opacity: 1; filter: brightness(.8) contrast(1.2);
-  }
-  13%, 16% {
-    opacity: .5; filter: brightness(1.2) contrast(.8);
-  }
-  35%, 38% {
-    opacity: 1;  filter: brightness(1) contrast(1);
-  }
-  55% {
-    opacity: .33; filter: brightness(1.2) contrast(1.25);
-  }
-`;
-
 const holoGradient = keyframes`
   0%, 100% {
     opacity: 0.5;
@@ -45,154 +27,48 @@ const holoGradient = keyframes`
   }
 `;
 
-export const StyledHoloCard = styled.div(
-  ({
-    active,
-    activeBackgroundPosition,
-    animated,
-    height,
-    width,
-    showSparkles,
-    asWrapper,
-  }: {
-    active: boolean;
-    activeBackgroundPosition: {
-      tp: number;
-      lp: number;
-    };
-    animated: boolean;
-    height?: number;
-    width?: number;
-    showSparkles: boolean;
-    asWrapper?: boolean;
-  }) => [
-    css`
-      ${asWrapper
-        ? css`
-            width: 100%;
-            height: 100%;
-            display: block;
-          `
-        : css`
-            width: ${width ? `${width}px` : '320px'};
-            height: ${height ? `${height}px` : '446px'};
-            display: inline-block;
-            vertical-align: middle;
-            margin: 20px 10px;
-          `}
-      background: transparent;
-      ${asWrapper
-        ? css`
-            border-radius: inherit;
-          `
-        : css`
-            border-radius: 5% / 3.5%;
-          `}
-      box-shadow: -3px -3px 3px 0 rgba(#26e6f7, 0.3),
-        3px 3px 3px 0 rgba(#f759e4, 0.3), 0 0 6px 2px rgba(#ffe759, 03),
-        0 35px 25px -15px rgba(0, 0, 0, 0.3);
+export const StyledHoloCard = styled.div(() => css`
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: transparent;
+    border-radius: inherit;
+    box-shadow: -3px -3px 3px 0 rgba(#26e6f7, 0.3),
+      3px 3px 3px 0 rgba(#f759e4, 0.3), 0 0 6px 2px rgba(#ffe759, 03),
+      0 35px 25px -15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: visible;
+
+    > * {
       position: relative;
-      overflow: ${asWrapper ? 'visible' : 'hidden'};
+      z-index: 1;
+    }
 
-      > * {
-        position: relative;
-        ${asWrapper
-          ? css`
-              z-index: 1;
-            `
-          : css`
-              z-index: 0;
-            `}
-      }
-
-      &:before,
-      &:after {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        background-position: 0% 0%;
-        background-repeat: no-repeat;
-        background-size: 300% 300%;
-        mix-blend-mode: color-dodge;
-        opacity: 0.2;
-        pointer-events: none;
-        ${asWrapper
-          ? css`
-              z-index: 9999;
-            `
-          : css`
-              z-index: 1;
-            `}
-        background-image: linear-gradient(
-          115deg,
-          transparent 0%,
-          #54a29e 25%,
-          transparent 47%,
-          transparent 53%,
-          #a79d66 75%,
-          transparent 100%
-        );
-      }
-    `,
-    showSparkles &&
-      ` 
-      &:after {
-        background-image: url('https://assets.codepen.io/13471/sparkles.gif'),
-          linear-gradient(
-            125deg,
-            #ff008450 15%,
-            #fca40040 30%,
-            #ffff0030 40%,
-            #00ff8a20 60%,
-            #00cfff40 70%,
-            #cc4cfa50 85%
-          );
-        position: center;
-        background-size: 180%;
-        mix-blend-mode: color-dodge;
-        opacity: 1;
-        pointer-events: none;
-        ${
-          asWrapper
-            ? css`
-                z-index: 9999;
-              `
-            : css`
-                z-index: 1;
-              `
-        }
-      }
-    `,
-    active &&
-      `
-  :before {
-    opacity: 1;
-    animation: none;
-    transition: none;
-    background-image: linear-gradient(
-      110deg,
-      transparent 25%,
-      #54a29e 48%,
-      #a79d66 52%,
-      transparent 75%
-    );
-    background-position: ${activeBackgroundPosition.lp}% ${activeBackgroundPosition.tp}%;
-  }
-`,
-    animated &&
-      css`
-        transition: 1s;
-        &:before {
-          transition: 1s;
-          animation: ${holoGradient} 12s ease infinite;
-        }
-        &:after {
-          transition: 1s;
-          animation: ${holoSparkle} 12s ease infinite;
-        }
-      `,
-  ]
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-position: 0% 0%;
+      background-repeat: no-repeat;
+      background-size: 300% 300%;
+      mix-blend-mode: color-dodge;
+      opacity: 0.2;
+      pointer-events: none;
+      z-index: 9999;
+      background-image: linear-gradient(
+        115deg,
+        transparent 0%,
+        #54a29e 25%,
+        transparent 47%,
+        transparent 53%,
+        #a79d66 75%,
+        transparent 100%
+      );
+      transition: 1s;
+      animation: ${holoGradient} 12s ease infinite;
+    }
+  `
 );
