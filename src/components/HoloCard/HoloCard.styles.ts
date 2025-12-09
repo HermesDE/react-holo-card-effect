@@ -27,7 +27,8 @@ const holoGradient = keyframes`
   }
 `;
 
-export const StyledHoloCard = styled.div(() => css`
+export const StyledHoloCard = styled.div(
+  () => css`
     width: 100%;
     height: 100%;
     display: block;
