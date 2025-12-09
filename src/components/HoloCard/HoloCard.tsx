@@ -3,14 +3,22 @@ import { StyledHoloCard } from './HoloCard.styles';
 import Tilt from 'react-parallax-tilt';
 
 interface Props {
-  children?: React.ReactNode;
-  url: string;
+  children: React.ReactNode;
+  url?: string;
   height?: number;
   width?: number;
   showSparkles?: boolean;
+  asWrapper?: boolean;
 }
 
-export const HoloCard = ({ children, url, height, width, showSparkles }: Props) => {
+export const HoloCard = ({
+  children,
+  url,
+  height,
+  width,
+  showSparkles,
+  asWrapper = false,
+}: Props) => {
   const [hover, setHover] = useState(false);
   const [animated, setAnimated] = useState(true);
   const [activeBackgroundPosition, setActiveBackgroundPosition] = useState({
@@ -21,26 +29,28 @@ export const HoloCard = ({ children, url, height, width, showSparkles }: Props) 
     y: 0,
     x: 0,
   });
-  const ref = useRef<HTMLInputElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   const handleOnMouseOver = (event: any) => {
     setAnimated(false);
     setHover(true);
 
     const card = ref.current;
+    if (!card) return;
 
+    const rect = card.getBoundingClientRect();
     const l =
       event.type === 'touchmove'
-        ? event.touches[0].clientX
+        ? event.touches[0].clientX - rect.left
         : event.nativeEvent.offsetX;
 
     const t =
       event.type === 'touchmove'
-        ? event.touches[0].clientY
+        ? event.touches[0].clientY - rect.top
         : event.nativeEvent.offsetY;
 
-    const h = card ? card.clientHeight : 0;
-    const w = card ? card.clientWidth : 0;
+    const h = card.clientHeight;
+    const w = card.clientWidth;
 
     var px = Math.abs(Math.floor((100 / w) * l) - 100);
     var py = Math.abs(Math.floor((100 / h) * t) - 100);
@@ -69,9 +79,10 @@ export const HoloCard = ({ children, url, height, width, showSparkles }: Props) 
         onMouseMove={handleOnMouseOver}
         onTouchMove={handleOnMouseOver}
         onMouseOut={handleOnMouseOut}
-        height={height ?? 446}
-        width={width ?? 320}
+        height={height}
+        width={width}
         showSparkles={showSparkles ?? true}
+        asWrapper={asWrapper}
       >
         {children}
       </StyledHoloCard>

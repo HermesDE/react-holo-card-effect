@@ -55,6 +55,7 @@ export const StyledHoloCard = styled.div(
     height,
     width,
     showSparkles,
+    asWrapper,
   }: {
     active: boolean;
     activeBackgroundPosition: {
@@ -65,30 +66,62 @@ export const StyledHoloCard = styled.div(
       x: number;
       y: number;
     };
-    url: string;
+    url?: string;
     animated: boolean;
-    height: number;
-    width: number;
+    height?: number;
+    width?: number;
     showSparkles: boolean;
+    asWrapper?: boolean;
   }) => [
     css`
-      width: ${width}px;
-      height: ${height}px;
-      background-color: #211799;
-      background-image: url(${url});
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      border-radius: 5% / 3.5%;
+      ${asWrapper
+        ? css`
+            width: 100%;
+            height: 100%;
+            display: block;
+          `
+        : css`
+            width: ${width ? `${width}px` : '320px'};
+            height: ${height ? `${height}px` : '446px'};
+            display: inline-block;
+            vertical-align: middle;
+            margin: 20px 10px;
+          `}
+      ${url
+        ? css`
+            background-color: #211799;
+            background-image: url(${url});
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+          `
+        : css`
+            background: transparent;
+          `}
+      ${asWrapper
+        ? css`
+            border-radius: inherit;
+          `
+        : css`
+            border-radius: 5% / 3.5%;
+          `}
       box-shadow: -3px -3px 3px 0 rgba(#26e6f7, 0.3),
         3px 3px 3px 0 rgba(#f759e4, 0.3), 0 0 6px 2px rgba(#ffe759, 03),
         0 35px 25px -15px rgba(0, 0, 0, 0.3);
       position: relative;
-      overflow: hidden;
-      display: inline-block;
-      vertical-align: middle;
-      margin: 20px 10px;
+      overflow: ${asWrapper ? 'visible' : 'hidden'};
       transform: rotateX(${activeRotation.y}deg) rotateY(${activeRotation.x}deg);
+
+      > * {
+        position: relative;
+        ${asWrapper
+          ? css`
+              z-index: 1;
+            `
+          : css`
+              z-index: 0;
+            `}
+      }
 
       &:before,
       &:after {
@@ -103,7 +136,14 @@ export const StyledHoloCard = styled.div(
         background-size: 300% 300%;
         mix-blend-mode: color-dodge;
         opacity: 0.2;
-        z-index: 1;
+        pointer-events: none;
+        ${asWrapper
+          ? css`
+              z-index: 9999;
+            `
+          : css`
+              z-index: 1;
+            `}
         background-image: linear-gradient(
           115deg,
           transparent 0%,
@@ -114,7 +154,9 @@ export const StyledHoloCard = styled.div(
           transparent 100%
         );
       }
-       `, showSparkles && ` 
+    `,
+    showSparkles &&
+      ` 
       &:after {
         background-image: url('https://assets.codepen.io/13471/sparkles.gif'),
           linear-gradient(
@@ -130,7 +172,16 @@ export const StyledHoloCard = styled.div(
         background-size: 180%;
         mix-blend-mode: color-dodge;
         opacity: 1;
-        z-index: 1;
+        pointer-events: none;
+        ${
+          asWrapper
+            ? css`
+                z-index: 9999;
+              `
+            : css`
+                z-index: 1;
+              `
+        }
       }
     `,
     active &&
