@@ -49,9 +49,7 @@ export const StyledHoloCard = styled.div(
   ({
     active,
     activeBackgroundPosition,
-    activeRotation,
     animated,
-    url,
     height,
     width,
     showSparkles,
@@ -62,11 +60,6 @@ export const StyledHoloCard = styled.div(
       tp: number;
       lp: number;
     };
-    activeRotation: {
-      x: number;
-      y: number;
-    };
-    url?: string;
     animated: boolean;
     height?: number;
     width?: number;
@@ -87,17 +80,7 @@ export const StyledHoloCard = styled.div(
             vertical-align: middle;
             margin: 20px 10px;
           `}
-      ${url
-        ? css`
-            background-color: #211799;
-            background-image: url(${url});
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-          `
-        : css`
-            background: transparent;
-          `}
+      background: transparent;
       ${asWrapper
         ? css`
             border-radius: inherit;
@@ -110,7 +93,6 @@ export const StyledHoloCard = styled.div(
         0 35px 25px -15px rgba(0, 0, 0, 0.3);
       position: relative;
       overflow: ${asWrapper ? 'visible' : 'hidden'};
-      transform: rotateX(${activeRotation.y}deg) rotateY(${activeRotation.x}deg);
 
       > * {
         position: relative;
@@ -203,7 +185,6 @@ export const StyledHoloCard = styled.div(
     animated &&
       css`
         transition: 1s;
-        tranform: rotateX(0deg) rotateY(0deg);
         &:before {
           transition: 1s;
           animation: ${holoGradient} 12s ease infinite;

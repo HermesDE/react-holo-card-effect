@@ -1,10 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { StyledHoloCard } from './HoloCard.styles';
-import Tilt from 'react-parallax-tilt';
 
 interface Props {
   children: React.ReactNode;
-  url?: string;
   height?: number;
   width?: number;
   showSparkles?: boolean;
@@ -13,7 +11,6 @@ interface Props {
 
 export const HoloCard = ({
   children,
-  url,
   height,
   width,
   showSparkles,
@@ -24,10 +21,6 @@ export const HoloCard = ({
   const [activeBackgroundPosition, setActiveBackgroundPosition] = useState({
     tp: 0,
     lp: 0,
-  });
-  const [activeRotation, setActiveRotation] = useState({
-    y: 0,
-    x: 0,
   });
   const ref = useRef<HTMLDivElement>(null);
 
@@ -64,28 +57,23 @@ export const HoloCard = ({
   const handleOnMouseOut = () => {
     setHover(false);
     setAnimated(true);
-    setActiveRotation({ x: 0, y: 0 });
   };
 
   return (
-    <Tilt>
-      <StyledHoloCard
-        url={url}
-        ref={ref}
-        active={hover}
-        animated={animated}
-        activeRotation={activeRotation}
-        activeBackgroundPosition={activeBackgroundPosition}
-        onMouseMove={handleOnMouseOver}
-        onTouchMove={handleOnMouseOver}
-        onMouseOut={handleOnMouseOut}
-        height={height}
-        width={width}
-        showSparkles={showSparkles ?? true}
-        asWrapper={asWrapper}
-      >
-        {children}
-      </StyledHoloCard>
-    </Tilt>
+    <StyledHoloCard
+      ref={ref}
+      active={hover}
+      animated={animated}
+      activeBackgroundPosition={activeBackgroundPosition}
+      onMouseMove={handleOnMouseOver}
+      onTouchMove={handleOnMouseOver}
+      onMouseOut={handleOnMouseOut}
+      height={height}
+      width={width}
+      showSparkles={showSparkles ?? true}
+      asWrapper={asWrapper}
+    >
+      {children}
+    </StyledHoloCard>
   );
 };
